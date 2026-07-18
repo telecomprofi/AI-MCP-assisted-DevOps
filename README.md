@@ -10,7 +10,7 @@ After Developers recently started using ClaudeCode/Copilot in their coding work 
 ## Proposed solutions
 
 
-1. Creation/modification of compliant Infrastructure as a Developer’s self-service replaces TicketOps.
+1. The Autonomous AI/MCP Self-Service Infrastructure Workflow - replaces DevOps TicketOps.
 2. Production Incident  investigation by Operations/SRE are assisted by AI/MCP querying actual infrastructure (AWS), observability (DataDog) and CI/CD tools (GitHub Actions).
 3. AI assisted Instrumenting applications with compliant observability tools (OTEL, DD agent, metrics,logs, traces, alerts, dashboards).
 
@@ -43,11 +43,40 @@ The key mechanism is policy enforcement at generation time, not review time. If 
 
 ## Components
 
-AI agent with properly configured approved set of MCP servers
+- AI agent with properly configured approved set of MCP servers
 
-Central company repository with Infra/CI/CD/Security-related compliance requirements (aka as standards and/or metadata, e.g. .md context layer) that used as RAG (Retrieval-Augmented Generation) context
+- Central company repository with Infra/CI/CD/Security-related compliance requirements (aka as standards and/or metadata, e.g. .md context layer) that used as RAG (Retrieval-Augmented Generation) context
 
-Remote MCP servers that connects AI agentic workflows with upstream APIs (AWS, GitHub) and provide tools, authN/authZ, skills, documentation etc to decrease hallucination and improve autonomy
+- Remote MCP servers that connects AI agentic workflows with upstream APIs (AWS, GitHub) and provide tools, authN/authZ, skills, documentation etc to decrease hallucination and improve autonomy
 
-RBAC, Audit, Prompt validation proxies or other mechanism of AI agent/MCP server security and governance preventing unwanted or dangerous changes to production artefacts
+- RBAC, Audit, Prompt validation proxies or other mechanism of AI agent/MCP server security and governance preventing unwanted or dangerous changes to production artefacts
+
+
+## The Autonomous AI/MCP Self-Service Infrastructure Workflow
+
+
+### The Intent: 
+
+A developer prompts the agent: "I need a standard secure PostgreSQL database for a new microservice called 'billing' in staging." [1]
+
+### Context Gathering (MCP):
+
+The AI Agent uses the Filesystem MCP to find your organization's verified PostgreSQL Terraform module. It automatically extracts mandatory variables. [1, 2]
+
+### Drafting & Auto-Tagging: 
+
+The AI writes the configuration. It automatically injects the tags (Service: billing, Env: staging, CreatedBy: AI-Platform-Agent) based on the prompt context.
+
+### Day-1 Observability Injection: 
+
+The AI automatically appends an OpenTelemetry sidecar config or a Datadog monitor resource to the pull request because its system prompt mandates "never deploy databases without an alert metric."
+
+### Pre-Flight Compliance Check (MCP):
+
+The AI pipes the draft code through the Compliance MCP Server. If Checkov returns a warning (e.g., Database public access not explicitly disabled), the AI catches it, rewrites the code to fix the vulnerability, and tests it again. [1]
+
+### GitOps Execution:
+
+The AI opens a Clean Pull Request. A human platform engineer simply reviews the automated compliance logs and clicks "Merge" to let Atlantis or GitHub Actions deploy it. [1]
+
 
